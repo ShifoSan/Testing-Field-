@@ -6,7 +6,7 @@
     <title>Aura - Your Personal AI Reimagined</title>
     <style>
         /* 1. Global Styles & Font Import */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&family=Inter:wght@400;700&display=swap');
 
         :root {
             --bg-color: #0a0b1e;
@@ -45,6 +45,7 @@
         }
 
         h1, h2, h3 {
+            font-family: 'Exo 2', sans-serif;
             font-weight: 700;
         }
 
@@ -94,6 +95,11 @@
 
         .hero-content h1 {
             margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--accent-color), #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         @keyframes fadeIn {
@@ -137,10 +143,93 @@
             box-shadow: 0 0 30px -5px var(--accent-color);
         }
 
-        /* 4. CTA Section */
+        /* 4. New Sections Styling */
+        #how-it-works, #testimonials {
+            min-height: auto;
+            padding-top: 50px;
+            padding-bottom: 100px;
+        }
+
+        .how-it-works-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 50px;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            text-align: left;
+        }
+
+        .how-it-works-grid > div {
+            opacity: 0;
+            transform: translateY(50px);
+            will-change: transform, opacity;
+            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+        .how-it-works-grid > div.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .how-it-works-grid h3 {
+            font-size: 2rem;
+        }
+
+        .how-it-works-grid p {
+            margin-bottom: 15px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .testimonial-card {
+            background-color: #111224; /* Slightly different bg */
+            padding: 30px;
+            border-radius: 10px;
+            text-align: left;
+            border-left: 5px solid var(--accent-color);
+            opacity: 0;
+            transform: translateY(50px);
+            will-change: transform, opacity;
+            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+        .testimonial-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            font-weight: 400;
+        }
+
+
+        /* 5. CTA Section */
         #cta {
             min-height: auto;
             padding: 150px 5%;
+        }
+
+        #cta h2 {
+            margin-bottom: 20px;
+        }
+
+        #cta p {
+            margin-bottom: 40px;
+            max-width: 600px;
         }
 
         .cta-button {
@@ -155,27 +244,18 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: color 0.4s ease, background-color 0.4s ease;
+            transition: all 0.4s ease;
         }
 
         .cta-button::before {
             content: '';
             position: absolute;
-            top: var(--y);
-            left: var(--x);
-            transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle closest-side, var(--accent-color), transparent);
-            border-radius: 50%;
-            opacity: 0;
-            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
-        }
-
-        .cta-button:hover::before {
-            width: 400px;
-            height: 400px;
-            opacity: 0.3;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
         }
 
         .cta-button:hover {
@@ -184,9 +264,19 @@
             box-shadow: 0 0 40px var(--accent-color);
         }
 
-        /* 5. Responsive Design */
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* 6. Responsive Design */
         @media (min-width: 768px) {
             .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .how-it-works-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .testimonials-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
@@ -228,7 +318,43 @@
     </section>
 
     <!-- Section 3: Call to Action (CTA) -->
+    <!-- Section: How It Works -->
+    <section id="how-it-works">
+        <h2>Smarter, Faster, Together</h2>
+        <div class="how-it-works-grid">
+            <div>
+                <h3>Data That Connects</h3>
+                <p>Aura processes information from your apps and conversations to build a dynamic understanding of your needs, making your workflow smoother and more intuitive.</p>
+                <p>This contextual awareness allows it to provide proactive assistance that feels like magic.</p>
+            </div>
+            <div>
+                <img src="https://source.unsplash.com/600x400/?abstract,data,network" alt="Abstract data network" style="width:100%; border-radius: 10px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Testimonials -->
+    <section id="testimonials">
+        <h2>Trusted by Innovators</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p>"Aura has fundamentally changed our workflow. It's not just an assistant; it's a partner."</p>
+                <h3>— Alex Chen, CEO of Nova</h3>
+            </div>
+            <div class="testimonial-card">
+                <p>"The predictive capabilities are mind-blowing. It's three steps ahead of me at all times."</p>
+                <h3>— Sam Rivera, Lead Developer</h3>
+            </div>
+            <div class="testimonial-card">
+                <p>"Seamless integration across all my devices. Aura has created a truly unified smart ecosystem."</p>
+                <h3>— Ben Carter, Tech Influencer</h3>
+            </div>
+        </div>
+    </section>
+
     <section id="cta">
+        <h2>Ready to Join?</h2>
+        <p>Sign up for the beta and be the first to experience the future.</p>
         <button class="cta-button">Join the Beta</button>
     </section>
 
@@ -313,8 +439,8 @@
             initParticles();
             animate();
 
-            // 2. Intersection Observer for Feature Card Animations
-            const featureCards = document.querySelectorAll('.feature-card');
+            // 2. Intersection Observer for Animations
+            const animatedElements = document.querySelectorAll('.feature-card, .how-it-works-grid > div, .testimonial-card');
             const observerOptions = {
                 root: null, // viewport
                 rootMargin: '0px',
@@ -324,28 +450,20 @@
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
-                        // Add a delay based on the card's index
+                        // Add a delay based on the element's index to stagger the animation
                         setTimeout(() => {
                             entry.target.classList.add('is-visible');
-                        }, index * 200); // Stagger the animation
+                        }, index * 150);
                         observer.unobserve(entry.target); // Stop observing once it's visible
                     }
                 });
             }, observerOptions);
 
-            featureCards.forEach(card => {
-                observer.observe(card);
+            animatedElements.forEach(el => {
+                observer.observe(el);
             });
 
-            // 3. Holographic Shimmer Effect for CTA Button
-            const ctaButton = document.querySelector('.cta-button');
-            ctaButton.addEventListener('mousemove', e => {
-                const rect = ctaButton.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                ctaButton.style.setProperty('--x', `${x}px`);
-                ctaButton.style.setProperty('--y', `${y}px`);
-            });
+            // 3. Holographic shimmer effect is now CSS-only. No JS needed.
 
         });
     </script>
