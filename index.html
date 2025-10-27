@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Your Personal AI Reimagined</title>
+    <style>
+        /* 1. Global Styles & Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        :root {
+            --bg-color: #0a0b1e;
+            --accent-color: #00ffff;
+            --text-color: #f0f0f0;
+            --secondary-text-color: #a0a0b0;
+            --card-bg-color: #1a1b2f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        section {
+            padding: 100px 5%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 50px;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--secondary-text-color);
+            line-height: 1.6;
+        }
+
+        /* 2. Hero Section */
+        #hero {
+            justify-content: center;
+            padding: 0; /* Remove padding to make canvas full screen */
+        }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        .hero-content h1 {
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 3. Features Section */
+        #features {
+            min-height: auto; /* Features section doesn't need to be full height */
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg-color);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid transparent;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            opacity: 0; /* Initially hidden for scroll animation */
+            transform: translateY(50px); /* Initially moved down */
+            will-change: transform, opacity;
+        }
+
+        /* The class that will be added by JS */
+        .feature-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 30px -5px var(--accent-color);
+        }
+
+        /* 4. CTA Section */
+        #cta {
+            min-height: auto;
+            padding: 150px 5%;
+        }
+
+        .cta-button {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            padding: 20px 60px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease, background-color 0.4s ease;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: var(--y);
+            left: var(--x);
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle closest-side, var(--accent-color), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+        }
+
+        .cta-button:hover::before {
+            width: 400px;
+            height: 400px;
+            opacity: 0.3;
+        }
+
+        .cta-button:hover {
+            color: var(--bg-color);
+            background-color: var(--accent-color);
+            box-shadow: 0 0 40px var(--accent-color);
+        }
+
+        /* 5. Responsive Design */
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Section 1: Hero -->
+    <section id="hero">
+        <canvas id="particle-canvas"></canvas>
+        <div class="hero-content">
+            <h1>Meet Aura</h1>
+            <p>Your personal AI, reimagined for the future.</p>
+        </div>
+    </section>
+
+    <!-- Section 2: Features -->
+    <section id="features">
+        <h2>A New Kind of Intelligence</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Predictive Brain</h3>
+                <p>Aura anticipates your needs before you even think of them.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Seamless Context</h3>
+                <p>Understands your conversations, apps, and workflow.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Neural Weave</h3>
+                <p>Connects all your devices into one intelligent system.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Call to Action (CTA) -->
+    <section id="cta">
+        <button class="cta-button">Join the Beta</button>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // 1. Particle Network Animation for Hero Background
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const particleColor = '#00ffff'; // Accent color
+
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = Math.random() * 2 + 1;
+                    this.speedX = Math.random() * 2 - 1;
+                    this.speedY = Math.random() * 2 - 1;
+                }
+                update() {
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                }
+                draw() {
+                    ctx.fillStyle = particleColor;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                const particleCount = Math.floor(canvas.width * canvas.height / 15000);
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+                }
+            }
+
+            function connectParticles() {
+                let opacityValue = 1;
+                for (let a = 0; a < particles.length; a++) {
+                    for (let b = a; b < particles.length; b++) {
+                        const dx = particles[a].x - particles[b].x;
+                        const dy = particles[a].y - particles[b].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < 100) {
+                            opacityValue = 1 - (distance / 100);
+                            ctx.strokeStyle = `rgba(0, 255, 255, ${opacityValue})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[a].x, particles[a].y);
+                            ctx.lineTo(particles[b].x, particles[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (const particle of particles) {
+                    particle.update();
+                    particle.draw();
+                }
+                connectParticles();
+                requestAnimationFrame(animate);
+            }
+
+            initParticles();
+            animate();
+
+            // 2. Intersection Observer for Feature Card Animations
+            const featureCards = document.querySelectorAll('.feature-card');
+            const observerOptions = {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.1 // 10% of the item must be visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Add a delay based on the card's index
+                        setTimeout(() => {
+                            entry.target.classList.add('is-visible');
+                        }, index * 200); // Stagger the animation
+                        observer.unobserve(entry.target); // Stop observing once it's visible
+                    }
+                });
+            }, observerOptions);
+
+            featureCards.forEach(card => {
+                observer.observe(card);
+            });
+
+            // 3. Holographic Shimmer Effect for CTA Button
+            const ctaButton = document.querySelector('.cta-button');
+            ctaButton.addEventListener('mousemove', e => {
+                const rect = ctaButton.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                ctaButton.style.setProperty('--x', `${x}px`);
+                ctaButton.style.setProperty('--y', `${y}px`);
+            });
+
+        });
+    </script>
+</body>
+</html>
